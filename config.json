@@ -1,0 +1,6 @@
+{
+  "geocodingProvider": "ban",
+  "weatherProvider": "metnorway",
+  "port": 3000,
+  "httpTimeout": 10000
+}

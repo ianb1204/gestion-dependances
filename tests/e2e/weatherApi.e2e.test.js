@@ -124,10 +124,42 @@ describe('Weather API (Tests End-to-End)', () => {
     });
   });
 
-  describe('Test E2E réel (Intégration complète avec Nominatim & Open-Meteo)', () => {
-    it('devrait interroger les vraies API Nominatim et Open-Meteo pour "Alès"', async () => {
-      // Ici on n'injecte aucun mock : le conteneur IoC assemble les vrais services HTTP, Nominatim et Open-Meteo
-      const app = createApp();
+  describe('Tests E2E réels (Intégration complète multi-fournisseurs)', () => {
+    it('devrait interroger les vraies API souveraines BAN et MET Norway pour "Alès" (TP2)', async () => {
+      // Pile souveraine par défaut ou explicite : Base Adresse Nationale + MET Norway
+      const container = setupContainer({
+        config: {
+          GEOCODING_PROVIDER: 'ban',
+          WEATHER_PROVIDER: 'metnorway',
+        },
+      });
+      const app = createApp(container);
+
+      const res = await request(app)
+        .get('/weather?address=Al%C3%A8s')
+        .timeout(15000);
+
+      expect(res.status).toBe(200);
+      expect(res.body.success).toBe(true);
+      expect(res.body.data.location.displayName).toMatch(/Al[èe]s/i);
+      expect(res.body.data.location.latitude).toBeCloseTo(44.12, 1);
+      expect(res.body.data.location.longitude).toBeCloseTo(4.08, 1);
+      expect(res.body.data.forecast).toBeDefined();
+      expect(res.body.data.forecast.current).toBeDefined();
+      expect(res.body.data.forecast.current.temperature).toBeDefined();
+      expect(res.body.data.forecast.hourly).toBeDefined();
+      expect(res.body.data.forecast.hourly.time.length).toBeGreaterThan(0);
+    }, 20000);
+
+    it('devrait interroger les vraies API Nominatim et Open-Meteo pour "Alès" (Compatibilité TP1)', async () => {
+      // Pile historique TP1 : Nominatim + Open-Meteo configurable sans redéploiement
+      const container = setupContainer({
+        config: {
+          GEOCODING_PROVIDER: 'nominatim',
+          WEATHER_PROVIDER: 'openmeteo',
+        },
+      });
+      const app = createApp(container);
 
       const res = await request(app)
         .get('/weather?address=Al%C3%A8s')

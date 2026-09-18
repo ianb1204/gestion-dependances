@@ -65,13 +65,32 @@ export class OpenMeteoWeatherService extends WeatherServiceInterface {
       throw new ExternalServiceError('Open-Meteo', 'Réponse invalide reçue.');
     }
 
+    // Normalisation vers le modèle de domaine WeatherForecast sans fuite du DTO brut
+    const current = data.current ? {
+      time: data.current.time,
+      temperature: data.current.temperature_2m,
+      temperature_2m: data.current.temperature_2m,
+      weatherCode: data.current.weather_code,
+      weather_code: data.current.weather_code,
+      windSpeed: data.current.wind_speed_10m,
+      wind_speed_10m: data.current.wind_speed_10m,
+    } : null;
+
+    const hourly = data.hourly ? {
+      time: data.hourly.time || [],
+      temperature: data.hourly.temperature_2m || [],
+      temperature_2m: data.hourly.temperature_2m || [],
+      shortwave_radiation: data.hourly.shortwave_radiation || [],
+      windSpeed: data.hourly.wind_speed_10m || [],
+      wind_speed_10m: data.hourly.wind_speed_10m || [],
+    } : null;
+
     return new WeatherForecast({
       latitude: data.latitude ?? latitude,
       longitude: data.longitude ?? longitude,
       timezone: data.timezone || 'UTC',
-      current: data.current || null,
-      hourly: data.hourly || null,
-      raw: data,
+      current,
+      hourly,
     });
   }
 }

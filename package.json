@@ -1,13 +1,16 @@
 {
-  "name": "tp1-api-meteo",
-  "version": "1.0.0",
-  "description": "TP1 - API Météo avec Inversion de Contrôle (IoC) et Injection de Dépendances (DI)",
+  "name": "tp-api-meteo",
+  "version": "2.0.0",
+  "description": "API Météo avec Inversion de Contrôle (IoC), Injection de Dépendances (DI) et Multi-Fournisseurs (TP1 & TP2)",
   "type": "module",
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",
     "test": "vitest run",
+    "test:contract": "vitest run tests/contract",
+    "test:unit": "vitest run tests/unit",
+    "test:e2e": "vitest run tests/e2e",
     "test:watch": "vitest"
   },
   "keywords": [
@@ -16,7 +19,11 @@
     "express",
     "weather-api",
     "open-meteo",
-    "nominatim"
+    "nominatim",
+    "ban",
+    "base-adresse-nationale",
+    "met-norway",
+    "contract-tests"
   ],
   "author": "",
   "license": "ISC",
