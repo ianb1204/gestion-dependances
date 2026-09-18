@@ -1,0 +1,31 @@
+{
+  "name": "tp1-api-meteo",
+  "version": "1.0.0",
+  "description": "TP1 - API Météo avec Inversion de Contrôle (IoC) et Injection de Dépendances (DI)",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "keywords": [
+    "ioc",
+    "dependency-injection",
+    "express",
+    "weather-api",
+    "open-meteo",
+    "nominatim"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^18.0.0",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "supertest": "^7.2.2",
+    "vitest": "^3.2.7"
+  }
+}
